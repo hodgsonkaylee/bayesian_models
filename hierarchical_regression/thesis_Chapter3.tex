@@ -1,0 +1,115 @@
+\chapter{Results and Discussion}
+
+The hierarchical analysis on the health outcomes was run in JAGS in R with the ``R2jags" package \citep{r2jags}, which uses Markov chain Monte Carlo (MCMC) methods to sample posterior draws from the posterior distribution for the parameters. For each of the 29 models, I ran five chains of 12,000 iterations, then removed the first 2,000 as burn-in, and finally thinned by 5 to reduce autocorrelation. 
+
+I first verify the model with both visual and statistical diagnostics on the posterior draws, then proceed to reporting the results of the analysis.
+
+\section{Model Diagnostics}
+
+I verify the convergence of the posterior draws for the models, and ensure the accuracy of the estimates and quantiles. The results for the convergence diagnostics are displayed for the Syndrome coefficient specifically (since that is the independent variable I am interested in in this analysis), but are fairly representative of the performance of the posterior draws for the other coefficients in the model. Figure \ref{convplots} plots the posterior draws from the MCMC algorithm for the Syndrome coefficient in all 29 models. These plots, which are again representative of the posterior draws of other parameters, display the posterior draws of the MCMC after burn-in and thinning. 
+
+These seem to indicate that the posterior draws converged well, because there is no specific pattern in the posterior draws. I therefore proceed to an evaluation of some statistical diagnostics for convergence. 
+
+\begin{figure}[H]
+\renewcommand\thefigure{3.1}
+\centering
+\textbf{MCMC Posterior Draws for Syndrome variable}\par\medskip
+\centering
+  \includegraphics[height=18cm]{convplots.pdf}
+  \caption{These selected convergence plots show that the MCMC algorithm converged.}
+  \label{convplots}
+\end{figure}
+
+I find the effective sample size values through a function in the ``coda" package in R \citep{coda}, and the $\hat{R}$ values through the ``R2jags" package in R \citep{r2jags}. Low effective sample sizes indicate that there is too much autocorrelation between the draws, so this diagnostic helps to verify that the draws are reasonably independent of each other, and further that there are enough unique posterior draws that inference can reasonably be made on the posterior draws. I find that the lowest effective sample size for the Syndrome coefficient in the 29 models is 8,618 (out of 10,000 posterior draws remaining after burn-in and thinning). The $\hat{R}$ diagnostic values should be around 1 and indicate whether the chains (and within the chains) have converged to the same place as each other. For the Syndrome variable, the $\hat{R}$ values all approximately estimated at 1.001. These values close to 1 indicate that the model is not overly sensitive to different starting values in the MCMC algorithm. 
+
+Because I estimate the credible intervals for the Syndrome coefficients in the following section, I also use a diagnostic to check the number of iterations needed to accurately estimate the quantiles: the Raftery-Lewis Diagnostic \citep{rafterylewis}. The function used to calculate the Raftery-Lewis diagnostics is also from the ``coda" package in R \citep{coda}. With this function, I find the number of iterations that are required to accurately estimate the quantiles (0.025 and 0.975) with a 95\% probability, and an accuracy of 0.005. The minimum number needed for the Syndrome coefficients is 3620, and the max is 3865. Each of these coefficients have 10,000 posterior draws after burn-in, so I conclude that I have more than enough draws to accurately estimate the quantiles for the credible intervals. 
+
+Lastly, I examine the plots for the posterior draws of the variance terms in the model. Since the variance terms all have uniform priors, I verify that the draws are not pushing up against the upper bound of the uniform distribution, which would indicate that the bounds of these prior distributions may be inappropriate for this model. These convergence plots are in Figure \ref{convplotss2}. While the variance terms are all lower bounded at 0, a property of the variance term, the higher valued posterior draws do not appear to come close to the upper bound (1 or 2) in any of the plots. I therefore conclude that the uniform priors on the variance terms are fitting for this model.
+
+\begin{figure}[H]
+\renewcommand\thefigure{3.2}
+\centering
+\textbf{MCMC Posterior Draws for Variance Terms}\par\medskip
+\centering
+  \includegraphics[height=9cm]{convplotss2.pdf}
+  \caption{Convergence plots for variance terms.}
+  \label{convplotss2}
+\end{figure}
+
+I determine that the posterior draws have converged, the quantile estimates are accurate for the number of iterations used, and that the variance terms' prior distributions are appropriate, so I proceed to reporting the estimates and results of the models. 
+
+\section{Model Results}
+
+Table \ref{synest} provides the Syndrome estimates for each of the 29 models, as well as the 95\% credible intervals. Because for all of the standardized versions of the health indicators, lower scores indicate worse health outcomes, I expect from my hypothesis that all of the coefficients corresponding with the Syndrome, or the subordination of women, should be negative. A negative coefficient indicates that countries with worse subordination of women's interests to men's interests perform worse, on average, on that health indicator.
+
+The credible intervals for all of the Women's Health and the Children's Health indicators (shown in Table \ref{synest}) contain only negative values. This gives substantial evidence to support the claim that higher levels of subordination of women in the home are related to worse health outcomes for women and children. The results for the Overall Societal indicators are more mixed. While most of the coefficient estimates are negative, some of the credible intervals also include positive values. However, 10 out of the 16 models that measure overall health outcomes indicate that the subordination of women is a significant indicator of worse health outcomes. Notably, subordination seems to have an opposite effect on cigarette and alcohol consumption - countries with worse subordination of women tend to have lower alcohol and cigarette consumption.
+
+The last row of Table \ref{synest} gives the estimate and interval for $\mu_{Syndrome}$, which is the mean in the prior distribution for the $\beta_{Syndrome}$ in each model. This mean parameter has a hyperprior distribution in the model of $\text{Normal}(0,1)$. The $\mu_{Syndrome}$ estimate then becomes the overall mean for all of the Syndrome coefficients in the model, and therefore of interest in this study. The estimate indicates that the overall average effect of the subordination of women on the health outcomes in this study is -0.56. Both ends of the credible interval are negative, indicating that there is a significant average overall effect of the Syndrome on these health outcomes. 
+
+\begin{table}[htb]
+\renewcommand\thetable{3.1}
+       \footnotesize
+    \centering
+        \caption{Coefficient Estimate and Credible Interval Results for the Syndrome Predictor}
+    \begin{tabular}{l|l|r|r|r}
+    & \textbf{Health Variable} & \textbf{Estimate} & \textbf{2.5\%} & \textbf{97.5\%} \\
+    \hline
+    \hline
+    Women's Health & Female Life Expectancy at Birth &  -1.00 & -1.29 & -0.72 \\ 
+     & Pregnant Women Receiving Prenatal Care & -0.86 & -1.19 & -0.53 \\ 
+     & Births Attended by Skilled Staff  & -0.91 & -1.21 & -0.60 \\ 
+     & Births of Women Ages 15-19  & -0.61 & -0.89 & -0.32 \\ 
+     & Lifetime Risk of Maternal Death  & -0.96 & -1.25 & -0.67 \\
+     & Death by Preventable Conditions  & -0.98 & -1.27 & -0.69 \\ 
+     & Prevalence of HIV for Women Ages 15$+$  &  -0.91 & -1.25 & -0.58 \\
+     \hline
+     Children's Health & Children Under 5 Who are Stunted  &  -0.91 & -1.31 & -0.52 \\
+     & Infant Mortality Rate (IMR)  & -1.02 & -1.31 & -0.73 \\  
+     & Children Under 5 Who are Wasting  & -1.08 & -1.48 & -0.69 \\
+     & Children Under 5 who are Underweight  &  -0.91 & -1.31 & -0.51 \\ 
+     & Children Under 5 Deaths due to Diarrhea  & -0.80 & -1.08 & -0.52 \\
+     & Children Ages 12-23 Immunized Against Measles  &  -0.51 & -0.80 & -0.23 \\
+     \hline
+     Overall Societal & Open Defecation  &  -0.70 & -0.99 & -0.42 \\ 
+     Health & Open Defecation in Urban Areas  & -0.61 & -0.90 & -0.30 \\  
+     & Life Expectancy  & -0.94 & -1.23 & -0.65 \\
+     & Health Expenditure as \% of GDP & -0.81 & -1.10 & -0.52 \\ 
+     & Health Expenditure per Capita  & -0.03 & -0.32 & 0.27 \\
+     & Incidents of Tuberculosis  & -0.73 & -1.01 & -0.44 \\
+     & HIV Ages 15-49  & -0.12 & -0.46 & 0.22 \\ 
+     & HIV/AIDS Ages 15-49  & -0.14 & -0.48 & 0.20 \\ 
+     & Undernourishment  & -0.80 & -1.09 & -0.50 \\     
+     & Alcohol Consumption per Capita  & 1.23 & 0.92 & 1.53 \\ 
+     & Cigarette Consumption  &  0.40 & 0.09 & 0.70 \\
+     & Access to Improved Water Sources  & -0.72 & -1.01 & -0.42 \\
+     & Access to Improved Sanitary Facilities  & -0.80 & -1.09 & -0.51 \\ 
+     & Global Hunger Index  &  -0.98 & -1.33 & -0.62 \\ 
+     & Sustainable Society Index Human Wellbeing  &  -1.11 & -1.41 & -0.81 \\ 
+     & Average Dietary Energy Supply Adequacy  & -0.23 & -0.53 & 0.06 \\ 
+      \hline
+      \hline
+      Average Overall Effect & $\mu_{Syndrome}$ & -0.56 & -0.77 & -0.36 \\
+    \end{tabular}
+    \label{synest}
+\end{table}
+
+Overall, the results seem to corroborate my hypothesis: that countries with worse treatment of women tend to perform worse on health outcomes. These results are more straightforward for the health outcomes for both women and children, where the models for all of those sub-indicators support the hypothesis. And, although the results for the models with overall health outcomes were not as consistent, I still find that in 10 out of those 16 models, treatment of women is a significant negative determinant of health outcomes. 
+
+The pattern in the results is perhaps unsurprising given the theory behind this statistical model. I proposed that the treatment of women in the household directly affects the women and children involved in the poor treatment, but also impacts others in the family and community who rely on these women for care. The impact of poor treatment of these women is more clear, however, on the health of the women and their children in the home, while the affect on the community has a less clear or direct tie. Treatment of women in the household is significant to all of the health indicators on women and children, giving strong evidence for this direct tie proposed in the theory. The affect of women's status in the household is not as consistently tied to overall health, but the 10 out of 16 significant results indicate that the impact of the treatment of women reaches outside of the household into their communities. 
+
+\section{Discussion and Conclusion}
+
+I theorized in the introduction of this work that poor measures of national health are significantly associated with the dynamic between men and women that has consistently left women disadvantaged. I specifically hypothesize that countries with higher levels of systematic subordination of women in the household perform worse on health indicators for 1) women, 2) children, and 3) the overall public. The Bayesian hierarchical analysis results strongly support this hypothesis. I find consistently that the Syndrome variable is significantly linked to health outcomes for both women and children, and specifically that higher subordination on average corresponds to worse health outcomes. In 10 out of the 16 overall health models, I find the same results. Additionally, I estimate the overall average for all of the Syndrome coefficients, and find that there is an overall significant and negative average impact of poor treatment of women on the health outcomes included in this study.
+
+While causal inference cannot be made regarding the statistical results, I propose, as is beautifully theorized in Hudson et al. (forthcoming), that the sexual relations are the first political order of a society, and that these sex dynamics determine how decisions are made and where priority is placed within the family as well as outside, including health decisions. Women are disproportionately the caregivers in their societies and communities, and therefore have high impacts on their own health and the health of their families and communities, if they are empowered to do so. If women are disempowered, harmed, overly burdened, or silenced, their positive health practices and impacts are stifled. I therefore submit that political and social leaders interested in improving health should begin to place the empowerment of women at the center of their calculus for efforts to improve health outcomes.
+
+
+
+
+
+
+
+
+
+
+

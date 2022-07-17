@@ -1,0 +1,197 @@
+\chapter{Statistical Methods}
+
+I implement a Bayesian hierarchical model for the analysis of how the subordination of women affects health outcomes for countries. I first discuss some other possible models for the analysis, and the theoretical reasons for not using those, then introduce and expound on the approach used for the health analysis. Following the introduction and theoretical discussion, I implement a simulation study to verify my analysis approach. 
+
+\section{Preliminary Approaches} \label{prelim}
+
+One possible option for analysis of this dataset would be to use a multivariate multiple regression model. This approach would account for the possibility that the relationships between the Syndrome and each health indicator are intercorrelated. The multivariate regression model is written as: 
+
+\begin{equation}
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\Xi},
+\end{equation}
+
+where $\mathbf{Y}$ would be a matrix with each country's scores for each health indicator across the rows, $\mathbf{X}$ would be the matrix with the Syndrome and all of the control variables, again with the values for each country across the rows, and $\boldsymbol{\Xi}$ would be the error matrix. The interest would be in estimating all of the Syndrome components of $\boldsymbol{\beta}$, the matrix of coefficients. The multivariate regression model treats each row of $\mathbf{Y}$ as a single observation, which is only considered complete if the estimation for each response variable is given for that observation. Note that if the response data are complete (e.g. there are no missing values in $\mathbf{Y}$), then the parameter estimates in the multivariate model are the same as the estimates in the individual simple regression models for each response variable, and only the inference on those coefficients changes \citep{Rencher}.
+
+The health indicators chosen for the model are collected from many different databases. Because of this, there are different levels of data availability for each of the variables. The sample size (number of countries measured after I reduced the list for each variable down to the country list for the complete observations of the Syndrome variable and control variables) for the health indicators range anywhere from 103 to 160. Because of this large variability in data availability, a multivariate regression approach to this analysis would require either that 1) large numbers of observations be discarded from the analysis, or 2) large numbers of values be imputed. In this specific case, a multivariate regression model would require that every country have an estimated value for every health indicator. Without imputation, 86 out of the 160 countries, more than half of the observations, would be discarded from the multivariate analysis. 
+
+Many different methods are used for data imputation, some more sophisticated than others. Expectation-maximization and multiple imputation, perhaps the most sophisticated method, could be used to resolve this issue. Expectation-maximization essentially treats the missing components (or each row with at least one missing value) of the $\mathbf{Y}$ matrix as the responses in a regression model:
+
+\begin{equation}
+\hat{\mathbf{y}}_i^{(m)} = \hat{\boldsymbol{\mu}}_i^{(m)} + \mathbf{B} (\mathbf{x}_i^{(c)} - \hat{\boldsymbol{\mu}}_i^{(c)}),
+\end{equation}
+
+where (m) indicates that the observation's row has at least one missing value, and (c) indicates that the observation's row has no missing values. At each iteration, using the predicted values of $\mathbf{y}_i^{(m)}$, new regression coefficients are estimated by $\mathbf{B}=\hat{\boldsymbol{\Sigma}}_{(m)(c)}\hat{\boldsymbol{\Sigma}}_{(c)(c)}^{-1}$ and new values of the mean vectors ($\hat{\boldsymbol{\mu}}$) are estimated. This is repeated until convergence. Then, the multiple imputation step accounts for the uncertainty in predicting the missing values \citep{Rencher}. The algorithm takes the final estimates from the expectation-maximization step, $\tilde{\boldsymbol{\mu}}$ and $\tilde{\boldsymbol{\Sigma}}$, and uses those to find the missing values of $\mathbf{Y}$, with an error term in the calculation:
+
+\begin{equation}
+\mathbf{y}_{i,[m]}^{(m)} = \boldsymbol{\mu}_i^{(m)} + \mathbf{B} (\mathbf{x}_i^{(c)} - \boldsymbol{\mu}_i^{(c)}) + \mathbf{e}_{i,[m]}^{(m)},
+\end{equation}
+
+where $[m]$ indicates the missing value in the row with at least one missing observation, and $\mathbf{e}_{i,[m]}^{(m)} \sim\ \text{Multivariate Normal}(\mathbf{0},\boldsymbol{\Sigma}_{(m)(m)}-\boldsymbol{\Sigma}_{(m)(c)}\boldsymbol{\Sigma}_{(c)(c)}^{-1}\boldsymbol{\Sigma}_{(c)(m)})$ \citep{Rencher}.
+
+Although expectation-maximization and multiple imputation provides more accurate imputations, simpler methods are often used for imputation. For example, the mean hot-deck imputation takes the average of each column of $\mathbf{Y}$ and imputes that average value for every missing value.
+
+Both of these methods require that the data be missing at random, and we are not convinced of that in the health dataset. Different databases have varying lists of countries that they measure, so the missingness is likely at least partially reliant on that factor. Additionally, health outcome data collected at the country level is more likely to be reported by countries that have better health outcomes. Because these methods rely on the assumption that the data are missing at random \citep{Rencher}, I conclude that this would not be a good approach for the health data.
+
+One possible solution to the multivariate issue of data missingness could be to build individual simple regression models for each health indicator. In this case, we would build 29 individual regression models, then estimate and find the significance of the Syndrome parameter for each model. This would at least partially resolve the data missingness issue because only the number of observations missing for each individual response variable would be excluded in each model, so only between 0 and 57 observations would be excluded from each model depending on the number missing from the response variable. However, we would then lose the ability to take into account the relationship between the health indicators, a benefit of the multivariate regression analysis. And there is still concern that results would be biased because of the likely non-random data missingness.
+
+\section{Proposed Model}
+
+I propose an alternative approach that both avoids the need to impute large numbers of missing data and still considers the relationship between the health indicators: a Bayesian hierarchical approach to linear regression. This approach will allow analysis of each health indicator separately in a linear regression model. However, the relationship between the response variables will be taken into account in the hierarchy of the priors, by assuming that the prior distribution for the coefficients is the same for each model regardless of the response variable. The reasoning is easier to explain in the context of the specific model for this data, so I first introduce the model, then further explain the benefits of the proposed approach. 
+
+A hierarchical Bayesian model assumes that the parameters for the prior distribution are not fixed, which avoids the potential issue of overfitting when there are large amounts of parameters being estimated \citep{gelman}. The model essentially ``structure[s] some dependence into the parameters" \citep{gelman} by identifying some distribution among the parameters. 
+
+In this project, 29 individual linear regression models are considered, implementing a hierarchical Bayesian method to analyze the data in these models. The same independent variables are used in each model (the Syndrome and the seven control variables), but I analyze a different national-level health indicator as the response variable in each one.
+
+\subsection{Standardization of Independent and Dependent Variables}
+
+Some of the independent variables are categorical and some are continuous, and these continuous variables are not on the same scale, so I scale all of the independent variables. I implement a method proposed by Gelman (2013), to scale each of these independent variables, in order to set the same prior distributions for each \citep{gelman}. I first scale all of the continuous independent variables to have a mean of 0 and a standard deviation of 0.5. Then I take the colonization status variable, which is dichotomous, and shift it so that the variable also has a mean of 0 and a standard deviation of approximately 0.5. This is done by finding the proportion of 0's (0.13) and proportion of 1's (0.87), then redefining the 0's as 0.87 and the 1's as -0.13. In order to standardize the civilization variable, which is a categorical variable with 4 levels, I created 3 dichotomous variables which indicated 3 of the levels, then standardized each of those in the same way as colonial status. While this type of scaling may be not be appropriate for analysis where we need specific interpretations of the coefficients, this works for the purposes of this analysis because I am only asking whether there is a significant relationship between the subordination of women and health outcomes, so the farther the coefficients are from zero, the more evidence there is to support my hypothesis.
+
+I also make all of the dependent variables commensurate in both directionality and scale. However, I first verify the normality of the response variables, an assumption of the linear model. I find that some of the data are heavily skewed. To resolve this issue, I used the Box-Cox transformation \citep{boxcox} method to approximate a transformation for those response variables. The transformation was performed before standardizing the response variables. These transformations helped the data more closely match the normality assumptions of the linear model. The response data are then scaled so that the coefficient of each independent variable has the same prior distribution with the same hyperpriors across all 29 models (the variables are all approximately normally distributed after the transformations, so their distributional assumptions are the same). The scaling is accomplished by simply standardizing all of the dependent variables. This means I subtract the mean and divide by the standard deviation for each value within each variable. In order to make the directionality consistent, I then take all of the standardized versions of the variables whose original definitions specified that higher levels were worse, and multiply their entire vector by negative one. This allows me to select common hyperparameters for the prior distributions of each independent variables' coefficients across the models, because we expect the Syndrome and the other control variables to impact the commensurate version of the variables similarly. 
+
+Scaling the independent variables simplifies the model by allowing the same priors to be placed on each coefficient within each model, and scaling the dependent variables allows the same priors to be placed on each coefficient across the models. These common hyperparameters and prior distributions for each independent variable across each of the 29 models take into account the expected relationship between, and similar behavior of, the health indicators, by implementing prior information to induce the assumption that, because the health outcomes are related to each other, their relationship to the independent variables will be similar. This is accomplished in the Bayesian hierarchical model without requiring multivariate modeling and thereby ensuring that every individual observation available will be used in the analyses.
+
+\subsection{The Model}
+
+The three-level hierarchical model is structured as follows:
+
+\begin{equation}
+\begin{split}
+&\text{level 1: } y_{ij}|\boldsymbol{\beta}_{j},\sigma_{ij} = \beta_{j0} + \sum_{k=1}^{10} x_{ijk} \beta_{jk} + \epsilon_{i}, \epsilon_{i} \sim\ \text{Normal}(0,\sigma^2) \\
+&\text{level 2: } \beta_{j0} \sim\ \text{Normal}(0,1) \text{, } \beta_{jk} \sim\ \text{Normal}(\mu_{k},\phi_{k}) \text{, } \sigma^2 \sim\ \text{Uniform}(0,1) \\
+&\text{level 3: } \mu_{k} \sim\ \text{Normal}(0,1) \text{, } \phi_{k}^2 \sim\ \text{Uniform}(0, 2), 
+\end{split}
+\end{equation}
+
+where $i=1,...,160$ corresponds with the country, $j=1,...,29$ corresponds with the regression model (one model for each health variable), and $k=1,...,10$ corresponds with the independent variables. There are only eight independent variables, but because one of them is a categorical variable with four levels, there will be three coefficients corresponding with that variable.
+
+Because I am fairly certain regarding the behavior of the error term in the model, since the response variables are standardized so that they all have a mean of 0 and a standard deviation of 1, the error term $\epsilon_{i}$ has a prior distribution that matches the variation of the data. This means that the error term can be as large as it could possibly be if the covariates did not explain any of the variation, but the uniform prior on the error allows the data to drive the size of the error term. The tight prior distribution on $\beta_{j0}$ is appropriate in this case because, again, all of the response variables are standardized to have a mean of 0 and a standard deviation of 1. The prior for the intercept essentially allows for the $\beta_{j0}$ coefficient to explain all of the variation in the response even if the other covariates are all equal to zero.  
+
+The prior distributions for all of the other covariates are also set to a normal, but with common hyperparameters. At each iteration of the analysis, the same draws of both the error term ($\epsilon_i$) and the hyperparameters ($\mu_k$ and $\phi_k^2$) are used in all 29 models, which induces a correlation on the $\beta_{.k}$'s, and accounts for the relationship between the various health indicators.
+
+\section{Simulation Study}
+
+Before applying the proposed Bayesian hierarchical method to the dataset in this study, I use a simulation study on multivariate data with values that are missing non-randomly to test the hierarchical method against other possible methods discussed in Section \ref{prelim}. I compare the Bayesian hierarchical model to the multivariate regression method and simple multiple linear regression method. For the multivariate model, I use three different versions of the randomly generated data: 1) the data with all the missing values, 2) the data that has been imputed using the mean hot-deck imputation, and 3) the data that has been imputed using expectation-maximization and multiple imputation. 
+
+The data missingness in this simulation study closely resembles what I believe to be the missingness patterns in the health data. First, the percentage of observations missing are different for the different response variables, which matches the difference in the observations missing based on where the health data originated from. Once those percentages are chosen, I find the lowest values for that variable and delete those lowest values that match the percentage that should be missing. For example, if 20\% are supposed to be missing for that variable, I delete the lowest 20\% of the values for that response variable. This matches the assumption that countries with worse health outcomes are less likely to have recorded values for that outcome variable.
+
+I simulate multivariate data for a regression model, where the $\mathbf{X}$ values are drawn independently and randomly from a standard normal distribution ($x_{ij} \stackrel{i.i.d.}{\sim} \text{Normal}(0,1)$). The $\boldsymbol{\beta}$ values were chosen so that the coefficient for each explanatory variable ($k$) across the different response variables ($j$) were correlated: $\boldsymbol{\beta}_k \sim\ \text{Multivariate Normal}(\mathbf{0},\boldsymbol{\Sigma})$, where $\boldsymbol{\Sigma}$ was a $j$ by $j$ positive definite correlation matrix. Then for each iteration, 
+
+\begin{itemize}
+\item $\boldsymbol{\epsilon}$ was randomly generated such that $\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}$, where $\boldsymbol{\epsilon}\sim\ \text{Multivariate Normal}(\mathbf{0},\boldsymbol{\Sigma})$. $\boldsymbol{\Sigma}$ is a positive definite correlation matrix, which induces correlation between the $j$ response variables, but maintains the assumption that the $N$ observations are independent of each other.
+\item The percentage missing (0-30\%) is randomly chosen for each $Y_j$, and the actual values missing from $Y_j$ are then non-randomly chosen so that the missingness in the simulated data resembles the non-random missingness of the health variables. 
+\item Five different methods are used to estimate the $\boldsymbol{\beta}$ values with the dataset that contains non-random missing values of $\boldsymbol{Y}$.
+\begin{enumerate}
+\item Multivariate Linear Regression (removing data with missing values)
+\item Multivariate Linear Regression (using data where the missing values have been imputed with the column means of $\mathbf{Y}$)
+\item Multivariate Linear Regression (using data where the missing values have been imputed using expectation-maximization and multiple imputation)
+\item Simple Linear Regression (where each model is fit independently)
+\item Bayesian Hierarchical Linear Regression 
+\end{enumerate}
+\item For each model, the mean absolute error (MAE) and root mean squared error (RMSE) are calculated to compare the $\boldsymbol{\hat{\beta}}$ values to $\boldsymbol{\beta}$.
+\end{itemize}
+
+This simulation study was repeated with different sample sizes (N=50, N=160, N=300) and different numbers of response variables (m=5 and m=10), each time with 100 iterations. I report the average RMSE and average MAE across the 100 iterations. The RMSE and MAE are calculated each time as follows:
+
+\begin{equation}
+\text{RMSE} = \sqrt{\frac{1}{k+1}\sum_{r=0}^{k} (\beta_r - \hat{\beta}_r)^2 }
+\end{equation}
+
+\begin{equation}
+\text{MAE} = \frac{1}{k+1}\sum_{r=0}^{k} |\beta_r - \hat{\beta}_r|
+\end{equation}
+
+for each of the five methods listed above, where the $\hat{\beta}_r$ values are estimated using each of the five methods.
+
+These estimate results (the average values across the 100 iterations) are displayed in Table \ref{symcomp}. The results from the simulation study give multiple interesting insights into the models' performance when fed data with non-random missingness. First, I find that the hierarchical model's (Model 5) average RMSE and average MAE estimates are the lowest for three out of the six simulations. The simple linear regression model (Model 4) has the best, or lowest, average RMSE and average MAE for two of the other simulations, and the multivariate regression model with expectation-maximization and multiple imputation (Model 3) has the best for the final simulation ($N=300$, $m=10$). 
+
+While the point estimates are useful for comparing the models, because many of the estimates are so close, I also compare the 95\% confidence intervals of the true average RMSE and MAE for each method. These intervals are calculated by taking the 100 RMSE and MAE estimates for each method and finding: $\overline{\text{RMSE}} \pm \text{z}_{\alpha/2}\sqrt{\text{var}(\text{RMSE})/100}$ and $\overline{\text{MAE}} \pm \text{z}_{\alpha/2}\sqrt{\text{var}(\text{MAE})/100}$. The intervals results are displayed in Table \ref{symcompint}. The hierarchical model's intervals are always very close to the intervals for the simple linear regression model. In the first five simulations, the model with the lowest point estimate for the average RMSE and average MAE (Model 4 or Model 5) does not overlap with any of the first three models, indicating that the lowest estimate was significantly better than for the first three models. In the last iteration, while Model 3 had slightly lower average estimates, the difference was not significant compared to the estimates from Models 4 and 5. 
+
+From these results, I conclude that most of the time, the hierarchical regression model estimates the coefficients more accurately than most other models in the simulation. The simple linear regression model performs very similarly with the hierarchical model, with their confidence intervals on the average RMSE and MAE estimates overlapping most of the time. Specifically, the hierarchical model performs significantly better than any of the multivariate models in five out of six simulations, and the simple regression model does the same in four out of the six. In the last simulation, the intervals for models 3-5 overlap. Although the point estimate for the average RMSE and MAE is slightly lower for Model 3 than for the other two, the difference is not significant. 
+
+Overall, I conclude from this simulation that most of the time the hierarchical and simple regression models give significantly smaller average RMSE and MAE estimates than any of the multivariate models. The multivariate model with multiple imputation performs similarly to the other two models with a high sample size and a large number of response variables; however, this is the only case where it performs just as well, and the sample size is much larger than the sample size for the health dataset.
+
+\begin{table}[htb]
+\renewcommand\thetable{2.1}
+       \footnotesize
+    \centering
+        \caption{Simulation Study Model Comparisons - RMSE and MAE}
+    \begin{tabular}{l|l|r|r|r|r|r|r}
+    & & \multicolumn{2}{c}{N=50} & \multicolumn{2}{c}{N=160} & \multicolumn{2}{c}{N=300} \\
+     & & m=5 & m=10 & m=5 & m=10 & m=5 & m=10 \\
+    \hline
+    \hline
+    RMSE & Model 1 & 0.3337 & 0.2552 & 0.1153 & 0.1555 & 0.0859 & 0.1056  \\
+      & Model 2 & 0.3285 & 0.1846 & 0.1455 & 0.1563 & 0.1306 & 0.1264  \\ 
+      & Model 3 & 0.2096 & 0.1756 & 0.0976 & 0.0868 & 0.0710 & \textbf{0.0546} \\
+      & Model 4 & \textbf{0.1823} & 0.1588 & \textbf{0.0910} & 0.0868 & 0.0624 & 0.0565  \\
+      & Model 5 & 0.1847 & \textbf{0.1579} & 0.0913 & \textbf{0.0851} & \textbf{0.0623} & 0.0566  \\  
+      \hline
+    MAE & Model 1 & 0.2764 & 0.2077 & 0.0953 & 0.1263 & 0.0702 & 0.0858 \\
+      & Model 2 & 0.2612 & 0.1476 & 0.1131 & 0.1128 & 0.0942 & 0.0882 \\
+       & Model 3 & 0.1781 & 0.1373 & 0.0796 & 0.0704 & 0.0570 & \textbf{0.0436} \\
+              & Model 4 & \textbf{0.1502} & 0.1297 & \textbf{0.0744} & 0.0706 & 0.0510 & 0.0449 \\
+      & Model 5 & 0.1524 & \textbf{0.1290} & 0.0746 & \textbf{0.0695} & \textbf{0.0509} & 0.0449 \\
+    \end{tabular}
+    \label{symcomp}
+    \caption{This table displays the average root mean squared error (RMSE) and average mean absolute error (MAE) of the estimated coefficient values against the true values for each model (The order of the models is the same as in the algorithm description listed above). The average is across 100 iterations, and is given for different sample sizes (N=50, N=160, N=300) and different numbers of response variables (m=5 and m=10).}
+\end{table}
+
+\begin{table}[htb]
+\renewcommand\thetable{2.2}
+       \scriptsize
+    \centering
+        \caption{Simulation Study Model Comparisons - Average RMSE and MAE 95\% Confidence Intervals}
+    \begin{tabular}{l|l|c|c|c|c|c|c}
+    & & \multicolumn{2}{c}{N=50} & \multicolumn{2}{c}{N=160} & \multicolumn{2}{c}{N=300} \\
+     & & m=5 & m=10 & m=5 & m=10 & m=5 & m=10 \\
+    \hline
+    \hline
+RMSE & Model 1 & (.3316,.3358) & (.2534,.2569) & (.1147,.1159) & (.1547,.1562) & (.0854,.0863) & (.0988,.1123)  \\
+           & Model 2 & (.3274,.3297) & (.1839,.1854) & (.1449,.1462) & (.1558,.1569) & (.0937,.0947) & (.1232,.1295)  \\ 
+           & Model 3 & (.2086,.2107) & (.1734,.1777) & (.0972,.0981) & (.0862,.0869) & (.0707,.0714) & (.0535,.0558) \\
+           & Model 4 & (.1814,.1833)  & (.1580,.1595) & (.0906,.0914) & (.0864,.0871) & (.0621,.0627) & (.0550,.0579)  \\
+           & Model 5 & (.1837,.1857) & (.1571,.1587) & (.0909,.0917) & (.0848,.0854) & (.0620,.0626) & (.0552,.0581) \\  
+      \hline
+MAE & Model 1 & (.2746,.2782) & (.2061,.2092) & (.0947,.0959) & (.1256,.1269) & (.0698,.0706) & (.0812,.0904) \\
+         & Model 2 & (.2601,.2621) & (.1469,.1482) & (.1126,.1136) & (.1124,.1132) & (.0937,.0947) & (.0861,.0902) \\
+         & Model 3 & (.1673,.1690) & (.1362,.1384) & (.0792,.0799) & (.0702,.0707) & (.0567,.0572) & (.0427,.0446) \\
+         & Model 4 & (.1493,.1510) & (.1291,.1304) & (.0741,.0748) & (.0703,.0709) & (.0508,.0513) & (.0437,.0460) \\
+         & Model 5 & (.1515,.1533) & (.1283,.1296) & (.0743,.0750) & (.0692,.0698) & (.0507,.0512) & (.0438,.0462) \\
+    \end{tabular}
+    \label{symcompint}
+    \caption{This table displays the confidence intervals on the average root mean squared error (RMSE) and average mean absolute error (MAE) of the estimated coefficient values against the true values for each model (The order of the models is the same as in the algorithm description listed above). The intervals are given for different sample sizes (N=50, N=160, N=300) and different numbers of response variables (m=5 and m=10).}
+\end{table}
+
+ Because the simple linear regression model's average bias estimates were often not significantly different than the hierarchical model's, I also compare the average width of the confidence intervals of the simple linear model to the average width of the credible intervals of the hierarchical model, displayed in Table \ref{symcompci}. I find that in all simulations, the average credible interval width of the Bayesian model is smaller than the average confidence interval width of the simple regression models. This superior inferential property of the Bayesian model indicates that this model more accurately estimates the parameters.
+
+\begin{table}[htb]
+\renewcommand\thetable{2.3}
+       \footnotesize
+    \centering
+        \caption{Simulation Study Model Comparisons - Credible/Confidence Intervals}
+    \begin{tabular}{l|r|r|r|r|r|r}
+    & \multicolumn{2}{c}{N=50} & \multicolumn{2}{c}{N=160} & \multicolumn{2}{c}{N=300} \\
+     & m=5 & m=10 & m=5 & m=10 & m=5 & m=10 \\
+    \hline
+    \hline
+       Model 4 & 0.6410 & 0.6256 & 0.3471 & 0.3493 & 0.2469 & 0.2448 \\
+      Model 5 & \textbf{0.6134} & \textbf{0.5972} & \textbf{0.3372} & \textbf{0.3413} & \textbf{0.2416} & \textbf{0.2381} \\
+          \end{tabular}
+    \label{symcompci}
+    \caption{This table displays the average confidence interval width of Model 4 (Simple Linear Model) and average credible interval width of Model 5 (Hierarchical Bayesian Model) for the estimated coefficient values. The average is across 100 iterations, and is given for different sample sizes (N=50, N=160, N=300) and different numbers of response variables (m=5 and m=10).}
+\end{table}
+
+These results indicate that the hierarchical regression and simple regression estimates are statistically significantly less biased, measured by the average RMSE and MAE, than the multivariate regression methods, specifically for the assumed non-random missingness patterns of the health dataset. I further find that the hierarchical model consistently has smaller average credible interval widths than the simple linear regression model's confidence intervals. While we should still be cautious and concerned about non-randomly missing data, this method consistently estimates with less bias than imputing data for multivariate regression when the assumptions of random missingness are not met. This corroborates the theory that even the most sophisticated methods for imputation are not effective unless the missingness is random. I do note that the multivariate model, in general, performs better with the mean hot-deck imputed data than with the missing-values data, and better with the multiple imputed data than with the mean hot-deck imputed data.
+
+While the simple linear regression model performs similarly in unbiased estimation to the Bayesian hierarchical model, the Bayesian model 1) has smaller intervals around those estimates which is better for inference, and 2) allows prior information to be used, in this case to impose the assumptions of dependence between the response variables. I therefore continue with the use of the Bayesian model for analysis of the health data.
+
+
+
+
+
+
+
+
+
+
+

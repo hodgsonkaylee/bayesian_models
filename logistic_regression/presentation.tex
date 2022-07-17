@@ -1,0 +1,329 @@
+\documentclass{beamer}
+\usetheme{Singapore}
+
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{breqn}
+\usepackage{natbib}%,bibspacing}
+\usepackage{graphicx}
+\usepackage{bm}
+%\usepackage{geometry}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage[english]{babel}
+\usepackage[autostyle]{csquotes}
+
+\title{Women and The Environment}
+\subtitle{A Bayesian Logistic Regression Analysis}
+\author{Kaylee Hodgson}
+\institute{Brigham Young University}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Introduction}
+\begin{columns}
+	\begin{column}{0.4\textwidth}
+	\large
+Subordination of women in the home seems to be indicative of a violent culture that does not treat its valuable assets well, including the environment.
+	\end{column}
+	\begin{column}{0.6\textwidth}
+\begin{figure}
+\includegraphics[width=6cm,height=3.5cm]{Climate}
+\end{figure}
+	\end{column}
+\end{columns}
+\bigskip
+\bf{Purpose}: identify whether higher levels of gender inequality in the household are significantly tied to poor environmental wellbeing outcomes
+\end{frame}
+
+\begin{frame}
+\frametitle{The Syndrome Scale}
+Combines 11 indicators of the subordination of women in the home: 
+
+\begin{itemize}
+\tiny
+\begin{columns}
+	\begin{column}{0.48\textwidth}
+	\item prevalence of patrilocal marriage
+\item prevalence of brideprice or dowry
+\item prevalence and legality of polygyny
+\item presence of counsin marriage
+\item age of marriage for girls
+\item laws and practices surrounding women's property rights
+	\end{column}
+	\begin{column}{0.48\textwidth}
+	\item presence of son preferences or sex ratio alteration
+\item presence of inequity in family law/custom that favors males
+\item overall level of violence against women in society
+\item presence of societal sanction for femicide
+\item whether there is legal exoneration for rapists who offer to marry their victims 
+	\end{column}
+\end{columns}
+\end{itemize}
+\begin{figure}
+  \begin{centering}
+  \includegraphics[height=4cm,trim={2cm 7cm 2cm 5.1cm},clip]{mapillust.pdf}
+  \label{SynMap}
+    \end{centering}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Control Variables}
+\itemize
+\item percentage of the population that lives in urban areas (The World Bank)
+\item aggregated civilization identification (based on Samuel Huntington's civilizational) \item colonial heritage - dichotomous, indicates whether a country was colonized (from Valerie Hudson and Donna Lee Bowen's scale in their forthcoming book)
+\item percentage of land that is arable (The World Bank)
+\item number of unique land neighbors (Wikipedia)
+\item level of ethnic fractionalization (Alesina et al., 2003)
+\item level of religious fractionalization (Alesina et al., 2003).
+\end{frame}
+
+\begin{frame}
+\frametitle{Standardizing Variables for Analysis}
+\begin{itemize}
+\item Standardization of independent variables following the methods put forward in Gelman et al. (2014). 
+\item Scale all to have mean=0, standard deviation=0.5
+\item Dichotomous variable (colonization status): find proportion of 0's (0.13) and proportion of 1's (0.87), then redefining the 0's as 0.87 and the 1's as -0.13.
+\item Categorical variable (civilization): create 3 dichotomous variables which indicated 3 of the levels, then standardized each of those in the same way as colonial status
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Environmental Indicators}
+\footnotesize
+\begin{columns}
+	\begin{column}{0.40\textwidth}
+\itemize
+\item Water and Environmental Wellbeing
+\item Air Pollution
+\item Biodiversity and Pest Regulation
+\item Deaths caused by outdoor air pollution
+\item Air Quality
+\item Global Climate Risk Index
+	\end{column}
+	\begin{column}{0.55\textwidth}
+\centering	
+\begin{figure}
+  \centering
+  \textbf{Average Syndrome Score for Good and Bad Levels of Each Variable}\par\medskip
+  \includegraphics[height=4cm,trim={4.2cm 4cm 2cm 4.2cm},clip]{barplotillust.pdf}
+  \label{SynPerform}
+\end{figure}
+	\end{column}
+\end{columns}
+	Each variable is dichotomized where 0 indicates ``good" levels and 1 indicates ``bad" levels
+\end{frame}
+
+\begin{frame}
+\frametitle{Preliminary Model}
+Hierarchical Bayesian Model
+\footnotesize
+\begin{equation}
+\begin{split}
+&\text{Level 1: } y_{im}|p_{im} \sim\ \text{Bernoulli}(p_{im}), \\
+& \text{  logit}(p_{im}) = \beta_{m0} + \sum_{j=1}^{7} x_{imj} \beta_{mj} + \sum_{k=1}^{3} x_{imk} \alpha{mk} + \epsilon_{im} \\
+&\text{Level 2:   } \beta_0 \sim\ \text{Cauchy}(0,\sigma) \text{, } \beta_{j} \sim\ \text{Cauchy}(0,\theta) \text{, } \alpha_k \sim\ \text{Cauchy}(\mu,\phi) \\
+&\text{Level 3:  } \sigma \sim\ \text{Uniform}(5,15), \theta \sim\ \text{Normal}^+(2.5,1), \mu \sim\ \text{Gamma}(3,.5)
+\end{split}
+\end{equation}
+\small
+\itemize
+\item Not enough data to estimate the parameters on multiple levels
+\item Covariance matrix of the draws is not positive definite
+\end{frame}
+
+\begin{frame}
+\frametitle{The Model}
+\begin{equation}
+\begin{split}
+&y_{im}|p_{im} \sim\ \text{Bernoulli}(p_{im}),  \\
+&\text{  logit}(p_{im}) = \beta_{m0} + \sum_{j=1}^{7} x_{imj} \beta_{mj} + \sum_{k=1}^{3} x_{imk} \alpha{mk} + \epsilon_{im} \\
+&\text{    } \beta_0 \sim\ \text{Cauchy}(0,\sigma) \text{, } \beta_{j} \sim\ \text{Cauchy}(0,\theta) \text{, } \alpha_k \sim\ \text{Cauchy}(\mu,\phi) \\
+&\text{   } \sigma=5, \theta=2.5, \mu=\phi=2
+\end{split}
+\end{equation}
+$i=1,...,n$ corresponds with the country (or observation), $m=1,...,6$ corresponds with the regression model (one model for each environmental variable), $j=1,...,7$ and $k=1,...,3$ corresponds with the independent variables.
+\end{frame}
+
+\begin{frame}
+\frametitle{Prior Justification}
+Cauchy distribution chosen over the normal or the t distributions because the Cauchy is more flexible with extreme values. 
+\itemize
+\item $\beta$ priors are non-informative
+\item $\alpha$ priors correspond with the variables the I have more prior information for: Terrain, Urbanization, and Syndrome
+\end{frame}
+
+\begin{frame}
+\frametitle{Posterior Distribution}
+The posterior distribution is given, up to proportationality:
+\begin{equation}
+\begin{split}
+&p(. | y) \propto 
+p(\beta_0,\beta_1,...,\beta_7,\alpha_1,...,\alpha_3,\sigma,\theta,\mu, y) \propto  \\
+&\left[\prod_{i=1}^{n} \left(\frac{e^{X_i\beta}}{1+e^{X_i\beta}}\right)^{y_i} \left(\frac{1}{1+e^{X_i\beta}}\right)^{1-y_i}\right] \left[\frac{1}{\pi\sigma\left[1+\left(\beta_0/\sigma\right)^2\right]}\right] \\
+&\left[\prod_{j=1}^{6}\frac{1}{\pi\theta\left[1+\left(\beta_i/\theta\right)^2\right]}\right]
+\left[\prod_{k=1}^{4}\frac{1}{\pi\phi\left[1+\left((\alpha_i-\mu)/{\phi}\right)^2\right]}\right] 
+\end{split}
+\end{equation}
+\end{frame}
+
+\begin{frame}
+\frametitle{Computational Methods: Metropolis-Hastings}
+Markov chain Monte Carlo with multivariate proposal scheme:
+\begin{itemize}
+\item Set initial values for the parameters.
+\item Use normal approximation to obtain the hessian estimate for the covariance matrix ($\mathbf{S}$) and the optimized parameter estimates for the mean vector ($\mathbf{m}$).
+\item For each iteration: 
+\begin{enumerate}
+\item Set the proposal: $\mathbf{P} = \mathbf{m} + (\text{chol}(\mathbf{S}))'\text{rnorm}(11)$.
+\item Use a Metropolis-Hastings update to determine whether to keep the last samples or update with the proposal, using the proposal density: $f(\mathbf{P}) = -0.5(\mathbf{P}-\mathbf{m})'\mathbf{S}^{-1}(\mathbf{P}-\mathbf{m})$.
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Computational Methods: Metropolis-Hastings}
+\itemize
+\item 3 chains, 60,000 draws each
+\item initial values: all 0, mean estimates from priors, frequentist estimates
+\item burn-in: 20,000, thinning: every fifth draw
+\item CPU: under 5 seconds for each chain
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Checks}
+\begin{figure}
+\centering
+\includegraphics[height=6cm]{conv.png}
+\label{fig:diagSyn}
+\end{figure}
+Posterior draws for Syndrome coefficient for each regression model
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Checks}
+\centering
+\textbf{Diagnostics for Syndrome coefficient}
+\tiny
+\begin{table}[htb]
+    \centering
+    \begin{tabular}{l|r|r|r}
+      & \multicolumn{3}{l}{\textbf{Syndrome Coefficient Diagnostics}} \\
+     \hline
+     \textbf{Model} & Acceptance Rate & Effective Sample Size & $\hat{R}$ \\
+    \hline
+    Water and Environmental Wellbeing & 0.34 & 53.58 & 2.77 \\
+    Air Pollution  & 0.34 & 2615.55 & 1.10 \\
+    Biodiversity and Pest Regulation  & 0.04 & 666.72 & 1.12 \\
+    Deaths Caused by Outdoor Air Pollution  & 0.10 & 667.66 & 1.31 \\
+    Air Quality & 0.09 & 357.73 & 1.67 \\
+    Global Climate Risk Index  & 0.01 & 325.19 & 1.07 \\
+    \end{tabular}
+    \label{diagSyn}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Syndrome Estimate Results}
+\begin{figure}
+\textbf{Syndrome Coefficient Estimates and Credible Intervals for each Environmental Model}\par\medskip
+\centering
+  \includegraphics[height=6cm,trim={0cm 2cm 2cm 3.8cm},clip]{coefficientillust.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Frequentist Approach}
+\begin{figure}
+\textbf{Comparison of Syndrome Estimates in Bayesian and Frequentist Analysis}\par\medskip
+\centering
+  \includegraphics[height=6cm]{fcoefficientillust.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Sensitivity}
+\begin{equation}
+\begin{split}
+& \text{\bf{Less Informative Model}} \\
+&\text{    } \beta_0 \sim\ \text{Cauchy}(0,\sigma) \text{, } \beta_{j} \sim\ \text{Cauchy}(0,\sigma) \text{, } \alpha_k \sim\ \text{Cauchy}(0,\sigma) \\
+&\text{   } \sigma=5
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+& \text{\bf{More Informative Model}} \\
+&\text{    } \beta_0 \sim\ \text{Normal}(0,\sigma) \text{, } \beta_{j} \sim\ \text{Normal}(0,\theta) \text{, } \alpha_k \sim\ \text{Normal}(\mu,\phi) \\
+&\text{   } \sigma=5, \theta=2.5, \mu=\phi=2
+\end{split}
+\end{equation}
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Sensitivity Results}
+\begin{figure}
+\centering
+\textbf{Comparison of Syndrome Estimates In Sensitivity Analyses}\par\medskip
+\centering
+  \includegraphics[height=4cm]{coefficientsensillust.pdf}
+  \label{SynCoefEstSens}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Sensitivity Diagnostics}
+\begin{table}[htb]
+       \tiny
+    \centering
+\textbf{\footnotesize{Diagnostic Comparisons for Syndrome coefficient in Sensitivity Analyses:}\\ \tiny{ M1=Chosen Model, M2=Less Informative Model, M3=More Informative Model}}\par\medskip
+    \begin{tabular}{l||r|r|r||r|r|r||r|r|r}
+      & \multicolumn{3}{l}{\textbf{Acceptance Rate}} & \multicolumn{3}{l}{\textbf{Effective Sample Size}} & \multicolumn{3}{l}{\textbf{R-hat}} \\
+     \hline
+     \textbf{Model} & M1 & M2 & M3 & M1 & M2 & M3 & M1 & M2 & M3 \\
+    \hline
+    Water \& Env. Wellbeing & 0.34 & 0.35 & 0.34
+    & \bf{53.58}  & 22.33 & 22.52
+    & 3.36  & \bf{1.00} & 2.13 \\
+    Air Pollution  & 0.34  & 0.35 & 0.29
+    & \bf{2615.55}  & 22.73 & 123.23
+    & \bf{1.32}  & 5.00 & 3.73 \\
+    Biodiv. and Pest Reg.  & 0.04 & 0.04 &  0.04
+    & \bf{666.72}  & 474.21 & 426.77
+    & \bf{1.15}  & 1.39 & 1.45 \\
+    Deaths from O.A.P.  & 0.10  & 0.11 & 0.11
+    & 667.66  & 429.87 & \bf{2120.84}
+    & \bf{1.03}  & 1.37 & 1.05 \\
+    Air Quality & 0.09  & 0.10 & 0.09
+    & 357.73  & 112.37 & \bf{577.40}
+    & \bf{1.01}  & 1.55 & 1.05 \\
+    GCRI  & 0.01  & 0.02 & 0.01
+    & 325.19  & 199.05 & \bf{407.38}
+    & 1.42  & 2.24 & \bf{1.26} \\
+    \end{tabular}
+    \label{diagSynSens}
+\end{table}
+\end{frame}
+
+\setbeamercolor{title}{fg=violet}
+\begin{frame}
+\frametitle{Discussion and Conclusion}
+\begin{itemize}
+\item Results confirm the hypothesis 
+\item The results for Global Climate Risk Index model should be interpreted more cautiously
+\item Future research: collect more data for hierarchical approach, improve convergence and model fit
+\end{itemize}
+Overall, the results of this analysis indicate that the subordination of women in the household is a significant determinant of a country's environmental performance. 
+\end{frame}
+
+
+\end{document}

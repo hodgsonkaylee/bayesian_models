@@ -1,0 +1,158 @@
+
+\chapter{Background and Data}
+
+``People everywhere have divided themselves into men and women. And almost everywhere men have got the better deal…" \citep{Harari}. This dynamic between the sexes is well embedded in society, but has specifically plagued some areas of the world more than others. The variation in this dynamic allows for empirical testing on the impacts of higher levels of women's subordination. I analyze the health and wellbeing impact of this dynamic between the sexes that has consistently left women with the disadvantage. I argue that poor measures of national health are associated with the subordination of women at the household level (quantified as the Syndrome, introduced in Section \ref{syndrome}). 
+
+I specifically test whether women's health, children's health, and the general health of a nation can be explained by the treatment of women in the home. I hypothesize that countries with higher levels of systematic subordination of women will perform worse on health indicators for women, children, and the overall public. I test the hypothesis using a Bayesian hierarchical model, which I expound further on following a discussion of the subject matter and an introduction of the variables. 
+
+\section{Subordination of Women and Health}
+
+The subordination of women not only negatively impacts the health of the women themselves, but also their children \citep{Nour2}, and other members of their communities. When women are disempowered, their ability to care for themselves, care for their children, or impact the community is greatly diminished.
+
+Some of the aspects of the Syndrome scale (conceptualized in Section \ref{syndrome}), which is the scale used in this study that measures the subordination of women in the home, have more obvious ties to health outcomes, specifically for the women, such as cousin marriage, overall levels of violence against women in society, legal exoneration for rapists, and occurrences of femicide. I discuss some other aspects of the Syndrome that have less obvious ties to health outcomes.
+
+Child marriage, one aspect of the Syndrome scale measurements, has been found to put women at an increased risk for sexually transmitted disease, depression, cervical cancer, malaria, obstetric fistulas, maternal mortality, and nonuse of maternal health services \citep{Raj, Nour, Nour2}. Child marriage is clearly detrimental to the physical health of the girls involved. A UNICEF report summarizes the issue: ``Child marriage is a violation of human rights, compromising the development of girls and often resulting in early pregnancy and social isolation. Young married girls face onerous domestic burdens, constrained decision-making and reduced life choices" \citep{unicef}. Child marriage also puts the offspring of the child brides at greater risk for premature birth, and therefore infant mortality \citep{Raj, Nour2}. Wodon (2015) expounds on the health consequences of child marriage for both the girls and subsequent children:
+
+\singlespace 
+The practice is also associated with a higher risk of intimate partner violence and other forms of violence, which may lead to severe injuries and even death, as well as losses in earnings and out-of-pocket costs for healthcare. Next, child marriage is associated with higher risks of maternal mortality and morbidity, as well as malnutrition and depression. It is also associated with poor sexual and reproductive health outcomes including through sexually transmitted diseases. The practice also has consequences for children in terms of infant mortality, low birth weight, and stunting. Finally, child marriage also leads to losses in empowerment and decision-making as well as participation more generally \citep{Wodon}.
+
+\doublespace
+Polygyny is another component of the Syndrome that has been individually associated with poor health outcomes. Polygyny puts a significant strain on the family's resources, which discourages or makes impossible investments in the women and children, with the rare exception of a polygynous family that is wealthy. In polygynous families, there is less investment in, and focus on, the health and nutrition of the wives and their children \citep{Monroe}. Polygyny has been significantly tied to higher birth rates, HIV infection, low age of marriage for girls, high maternal mortality, lower life expectancy, higher levels of sex trafficking, and higher levels of domestic violence \citep{McDermott}. In addition to the physical woes, studies have also found negative psychological effects associated with polygyny, specifically for the wives and children \citep{SPBC}. The anxiety and depression felt by the women and children involved in the polygynous relationships is also extended to the women and children in monogamous marriages, who feel insecure in their family circle, worried that their husband or father may follow the same trend and decide to marry additional women \citep{Hudson}.
+
+If there is a strong preference for sons over daughters in a society, another aspect of the Syndrome, then the sons are valued over the daughters. This leads to families caring for the needs of their sons before, or instead of, putting resources toward their daughters. Intense son preference can also lead to high fertility and high maternal mortality rates in some societies, which negatively impacts the health of both the mother and the children \citep{AfghanWomen}. A study with 30 focus groups of 250 women in Pakistan emphasized the appalling health effects of son preference on women: 
+
+\singlespace
+Women repeatedly become pregnant to deliver as many children as possible preferably sons to become worthier... Women’s ability to enforce contraceptive use is very limited because of the unilateral power that their male partners/husbands exercise in fertility decisions. A woman is persuaded to continue bearing children until the family has at least one son; she sometimes delivers 7 or more daughters in order to accomplish the objective... Except the post-delivery period in case of the male baby, when higher allowances are given so that boy can be breastfed, generally meager nutritional allocation and repeated pregnancies make them malnourished \citep{Rizvi}.
+
+\doublespace
+One consideration in the occurrence of son preference is patrilocality. Patrilocality, again another aspect of the Syndrome, is the cultural practice of a woman moving away from her family when she is married to live with or near her husband's family. Under this practice, because the daughters leave their home to live with their husband's family but the sons stay with their own family, taking care of the sons is the best way for parents to ensure that they will be cared for in their old age. Again, this gives motivation for the families to care for their sons' health before their daughters' \citep{DasGupta}. 
+
+In addition to these direct linkages between different forms of women's disempowerment and the specific health outcomes, I propose that there is a direct link between their overall treatment and the health of the women, children, and community. Valerie Hudson, in conversation, has suggested that women are often the main caregivers for both their children and their extended family, and therefore often take on the majority of the responsibilities in the caregiving of their families and communities. Women are often the ones choosing and preparing the food in their home, taking their children and elderly family members to the doctor, choosing whether their children get immunized, treating illness, teaching their children about hygiene and nutrition, along with many other care responsibilities that disproportionately fall on women. As such, when women's voices and interests are subordinated, not only does their own health suffer, but their children and other adults in their family and community who rely on these women suffer negative health consequences as well. 
+
+As discussed above, researchers have addressed the linkage between many of the individual indicators of the subordination of women and indicators of health outcomes, an important step. However, in order to determine how the overall disempowering and harming of women affects these health outcomes, we need an indicator that measures these women's overall situation in the home, and we need to evaluate these different aspects of health for women, children, and the community. 
+
+\section{Variable Descriptions}
+
+The Syndrome is the main variable of interest in these analyses, and measures the subordination of women in the home. The Syndrome scale is first introduced and its methodology is extensively discussed in Hudson et. al. (forthcoming), which is the first literature to address the linkage between this scale and the health outcomes used in this paper, as well as other outcomes of national wellbeing.
+
+My purpose is to find whether the Syndrome is specifically a good predictor of a country's health and wellbeing, by implementing an analysis method that also deals with the missing data patterns in the dataset (expounded on in Section \ref{prelim}). In this section, I first introduce the Syndrome variable, then the control variables and the reasons for including each in the analysis. Finally, I discuss the indicators of national health and wellbeing that are the dependent values in the analysis.
+
+\subsection{The Syndrome} \label{syndrome}
+
+The Syndrome scale was created by The WomanStats Project (2017), and combines 11 components that are considered the key indicators of household-level subordination of women, measuring from 2010 to 2015. Hudson et. al. (forthcoming) extensively explain the theory behind the combination of these 11 components in their forthcoming book, but I will only briefly introduce the variable here, accepting their strong theoretical and statistical support for the choice in variable components. 
+
+Figure \ref{fig:subsyn} is a representation of how the individual components combine to create the overall Syndrome score, again a brief summary of the theory for the variable's components. The combination of these individual components gives an indication of the level that women's interests are subordinated to the interests of men within a country. Figure \ref{fig:synmap} is a mapping of Syndrome scores based on the 11 components, created by The WomanStats Project (2017). Countries which perform worse on these 11 measures have higher Syndrome scores. To give an example, South Sudan has the highest Syndrome score of 16, indicating that this scale identifies South Sudan as the country with the highest levels of systematic subordination of women at the household level. On the other hand, Australia, Netherlands, Norway, Sweden, and Switzerland all have the lowest Syndrome score possible (0), indicating that systematic subordination of women in the household is essentially nonexistent in these countries, based on the scale.  
+
+The eleven components of the Syndrome are:
+
+\begin{itemize}
+\item Prevalence of patrilocal marriage
+\item Brideprice/dowry
+\item Prevalence and legality of polygyny
+\item Cousin marriage
+\item Age of marriage for girls
+\item Women’s Property Rights in Law and Practice
+\item Son preference and sex ratio alteration
+\item Inequity in Family Law/Custom Favoring Males
+\item Overall level of violence against women in society
+\item Societal sanction for femicide
+\item Legal exoneration for rapists who offer to marry their victims
+\end{itemize}
+
+\begin{figure}
+\centering
+\begin{minipage}{.45\textwidth}
+\renewcommand\thefigure{1.1}
+  \begin{centering}
+  \includegraphics[width=6.5cm]{TheSyndrome.png}
+  \end{centering}
+  \caption{Subcomponents of the \newline Syndrome}
+  \label{fig:subsyn}
+\end{minipage}%
+\begin{minipage}{.50\textwidth}
+\renewcommand\thefigure{1.2}
+  \centering
+  \includegraphics[width=9cm,trim={0 3.5cm 0 0},clip]{TheSyndromeMap.png}
+  \caption{Map of Countries' Performance on the Syndrome Scale}
+  \label{fig:synmap}
+\end{minipage}
+\end{figure}
+
+This scale, to my knowledge, is the most comprehensive national-level scale regarding the subordination of women in the household available, and is therefore a useful variable to answer the question in this analysis.
+
+\subsection{Control Variables and Evaluation of Multicollinearity}
+
+In their forthcoming book, Hudson et. al. propose seven control variables that should be used in regression models that predict national level indicators from the Syndrome scale. In addition to the reasoning for inclusion of each control variable, the rules specified for including a control variable are: 1) the control variables should not be part of the Syndrome scale and should not be hypothesized effects of the Syndrome, 2) the bivariate correlation between any two control variables had to be less than 0.65 in order to avoid multicollinearity issues in the regression models, and 3) the variance inflation factors (VIFs) must be low, (all were lower than 1.5). The variables chosen, and their reason for inclusion, are:
+
+\begin{itemize}
+\item ``Aggregated Civilization Identification", based on the work of Samuel Huntington \citep{Huntington}. This is treated as a categorical variable in the analysis.  Samuel Huntington identified in his work different categorizations of civilization that he believed undermined peace and stability in a society. The variable included for this analysis is a condensed scale based on his classifications. The scale is condensed into four categories based on Huntington's categorizations: 1) majority Western, Orthodox, and Latin civilizations, 2) majority Muslim civilizations, 3) majority Hindu, Sinic, and Buddhist civilizations, and 4) African countries that are not majority Muslim. 
+\item ``Colonial Heritage" , Bowen and Hudson, 2017.  This is treated as an ordinal variable in the analysis. This is a dichotomous variable that measures whether a country was colonized (0 if it was not, 1 if it was). ``Colonized" is defined as one country sending military to another country to ascertain control over this other country. The value for each country is based on whether a country was colonized for, at minimum, 10 consecutive years from 1700 to 2017. This variable is included with the assumption that, generally, colonizing counties stunts their growth, which negatively impacts their progress in overall health.
+\item ``Percent Urban Population" from The World Bank, 2015 \citep{WB2015}. This is treated as a continuous variable in the analysis. This variable is included because I suspect that higher levels of the proportion of the population that lives in urban areas leads to easier access to health care. Additionally, the percentage of the urban population is a decent indicator of the country's wealth. Countries with more urban areas are often also those with higher GDP. Because the bivariate correlation between this variable and GDP per capita (also from The World Bank) is $r=.662$ (p-value=.001), I do not include GDP as a control variable in this analysis. I keep the urbanization variable instead of GDP because the urbanization variable controls for both the easier access to health care as well as the country's wealth, both of which I believe are indicators of health. 
+\item ``Percent Arable Land" from The World Bank \citep{WB2014}. This is treated as a continuous variable in the analysis. This terrain variable measures the percentage of land in a country that is arable, or suitable for growing crops. Multiple studies have identified a link between more extreme environments and the stability of the country \citep{Homer, Pickering, Emerson, Fukuyama}, which in turn could negatively impact investments and focus on the health of the nation.
+\item ``Number of Unique Land Neighbors" from Wikipedia \citep{Wiki2018}). This is treated as a continuous variable in the analysis. This variable measures the number of other countries whose borders touch a single country. This is included because, as is shown by multiple studies, the number of other countries surrounding one country negatively impacts the security \citep{HarveyMost, HarveyThomas}, which again in turn could negatively impact investments and focus on the nation's health.
+\item ``Ethnic Fractionalization", adapted from Alesina \citep{Alesina}).  This is treated as a continuous variable in the analysis. Multiple studies have found that lack of homogeneity in the population negatively impacts the security and stability of a country \citep{Fearon, Blimes}. The effects of this likely carry over into the nation's health outcomes.
+\item ``Religious Fractionalization", adapted from Alesina \citep{Alesina}).  This is treated as a continuous variable in the analysis. Heterogeneity in religion in a society has been linked to instability and security of a nation \citep{Fox, Juer}. The effects of this likely carry over into the nation's health outcomes as well.
+\end{itemize}
+
+\subsection{Global Health Indicators}
+
+I consider many indicators of national health and wellbeing to cover the spectrum of national health outcomes that I expect are affected by the Syndrome. These indicators represent a comprehensive look at women's health, children's health, and overall societal health.
+
+While most of the variables considered are continuous, or have enough ordinal levels that they can effectively be treated as continuous, three of the variables considered were ordinal with only three to five levels. While the methods proposed in the next section should also be tested on ordinal response data, I leave that endeavor to future research, and only include continuous variables in this study. The lists of variables below are disaggregated into three groups: women's health (7 indicators), children's health (6 indicators), and overall societal health (16 indicators), for a total of 29 health outcomes variables. The lists include the name of the variable, the year measured, the source of the data, the measurement units of the variable, the directional meaning (higher is better or lower is better), and the sample size once the variable observations are reduced to the countries with full observations from the Syndrome and all control variables. I also include the method or original source for the data collection or coding if available. Additionally, if any special notes are required to describe the variable, I also include that. 
+
+\begin{itemize}
+    \item Women's Health (including Maternal Health)
+\end{itemize}
+\begin{enumerate}
+\item Life Expectancy at Birth for Females (2015), World Health Organization, years, lower scores are worse, N=160. 
+\item Percentage of Pregnant Women Receiving Prenatal Care (2017, or most recent without searching earlier than 2008), The World Bank, percent, lower scores are worse, N=130. This is survey data originally collected by UNICEF's State of the World's Children, Childinfo, and Demographic and Health Surveys.
+\item Percentage of Birth Attended by Skilled Staff (2017, or most recent without searching earlier than 2008), The World Bank, percent, lower scores are worse, N=148. This is survey data originally collected by UNICEF's State of the World's Children, Childinfo, and Demographic and Health Surveys.
+\item Births per 1000 Women Ages 15-19 (2016), The World Bank, rate per 1000, higher scores are worse, N=160. These data are originally from the United Nations Population Division's World Population Prospects.
+\item Lifetime Risk of Maternal Death (2015), The World Bank, percent, higher scores are worse, N=160. The variable represents ``the probability that a 15-year-old female will die eventually from a maternal cause assuming that current levels of fertility and mortality (including maternal mortality) do not change in the future, taking into account competing causes of death" \citep{wbopen}.
+\item Death by Communicable Diseases, Maternal, Prenatal and Nutrition Conditions as a percentage of Total Population (2015), The World Bank, percent, higher scores are worse, N=160. Because health data is difficult to accurately estimate for developing countries, epidemiological models are used to estimate this variable.
+\item Prevalence of HIV Among Women Ages 15+ (2016), The World Bank, percent (``Women’s share of population aged 15+ living with HIV (\%)", meaning that it is the percentage, out of the total HIV population, of women), higher scores are worse, N=121.
+\end{enumerate}
+
+\begin{itemize}
+    \item Children's Health
+\end{itemize}
+\begin{enumerate}
+\item Percentage of Children Under 5 Who are Stunted (2015, or most recent without searching earlier than 2007), The World Bank, percent, higher scores are worse, N=104. This is the percentage of children under 5 who are more than two standard deviations below the median height for their age. The data were collected and recorded under WHO's child growth standards set in 2006.
+\item Infant Mortality Rate (2016), The World Bank, rate per 1000 live births, higher scores are worse, N=160.
+\item Prevalence of Wasting in Children Under 5 (2015, or most recent without searching earlier than 2007), The World Bank, percent, higher scores are worse, N=103. These estimates are collected from surveys of a sample of the population, censuses, and vital registration systems. This is the percentage of children under 5 who are more than two standard deviations below the median weight for their height. The data were collected and recorded under WHO's child growth standards set in 2006.
+\item Percentage of Children Under 5 who are Underweight (2015, or most recent without searching earlier than 2007), The World Bank, percent, higher scores are worse N=103. This is the percentage of children under 5 who are more than two standard deviations below the median weight for their age. The data were collected and recorded under WHO's child growth standards set in 2006.
+\item Deaths due to Diarrhea of Children Under 5 (2010), World Health Organization (Accessed from Knoema), percent, higher scores are worse, N=159.
+\item Percentage of Children Ages 12-23 Months Immunized Against Measles (2016), The World Bank, percent, lower scores are worse, N=160. The estimates are based on WHO and UNICEF's assessment of national immunization coverage rates, which take both administrative and household survey data. 
+\end{enumerate}
+
+\begin{itemize}
+    \item Overall Societal Health
+\end{itemize}
+\begin{enumerate}
+\item	Percentage of Total Population Using Open Defecation (2015), WHO/UNICEF, percent, higher scores are worse, N=160. 
+\item Percentage of Population Using Open Defecation in Urban Areas (2015), WHO/UNICEF, percent, higher scores are worse, N=157. Note: if value was missing and Percentage of Total Population Using Open Defecation variable’s value was 0, we used a 0). 
+\item Life Expectancy (2015), World Health Organization, years, lower scores are worse, N=160. 
+\item Health Expenditure as a percentage of GDP (2015), World Health Organization, percent, lower scores are worse, N=156. 
+\item Health Expenditure Per Capita (2015), World Health Organization (Accessed from Wikipedia), US dollars, lower scores are worse, N=160. 
+\item Incidence of Tuberculosis per 100,000 People (2016), The World Bank, rate per 100,000, higher scores are worse, N=160. The World Bank's database warns that the difficulty of obtaining data in developing countries can make the data unreliable, but WHO used ``epidemiological models and statistical standards" to estimate the values. \citep{wbopen}.
+\item Percentage of Population Between 15-49 with HIV (2016), The World Bank, percent, higher scores are worse, N=121. Epidemiological models are used to estimate this variable when data on HIV is not readily available. The models are updated routinely. 
+\item Percentage of Adults Ages 15-49 with HIV/AIDS (2016), CIA World Factbook, percent, higher scores are worse, N= 120. 
+\item Percentage of Population that is Undernourished (2015), The World Bank, percent, higher scores are worse, N=148. The data are originally collected from the Food and Agriculture Organization of the United Nations. The World Bank database specifies that this variable measures ``food deprivation based on average food available for human consumption per person, the level of inequality in access to food, and the minimum calories required for an average person" \citep{wbopen}.
+\item Total Alcohol Consumption Per Capita (2015), The World Bank, liters of pure alcohol per capita, higher scores are worse, N=159. The estimates ``are produced by summing up the 3-year average per capita (15+) recorded alcohol consumption and an estimate of per capita (15+) unrecorded alcohol consumption for a calendar year" \citep{wbopen}.
+\item Cigarette Consumption, number of cigarettes smoked per person per year ages $>$ 15 (2016), The Tobacco Atlas, higher scores are worse, N=159. 
+\item Access to Improved Water Sources (2016), Social Progress Index, percent of the rural population, lower scores are worse, N=157. This variable measures the percentage of the population with access to an improved water source (that is not more than a 30 minute trip total) for drinking water, originally collected by WHO/UNICEF's Joint Monitoring Programme for Water Supply and Sanitation.
+\item Access to Improved Sanitary Facilities (2016), Social Progress Index, percent, lower scores are worse, N=158. The variable measures the percentage of the population that use improved sanitation facilities, originally collected by WHO/UNICEF's Joint Monitoring Programme for Water Supply and Sanitation.
+\item Global Hunger Index (2016), Global Hunger Index, scale (min=4, max=46.1), higher scores are worse, N=111. \cite{ghi}.
+\item Sustainable Society Index Human Wellbeing (2016), Sustainable Society Index, continuous scale (min=3.1; max=9.0), lower scores are worse, N=145. This variable combines indicators of 1) basic needs, 2) personal development and health, and 3) well-balanced society. 
+\item Average Dietary Energy Supply Adequacy (2014-2016), Food and Agriculture Organization of the UN, percent (3-year average), lower scores are worse, N=151. 
+\end{enumerate}
+
+\textbf{\textit{I hypothesize that there is a significant relationship between the Syndrome's quantification of the subordination of women and these health outcomes.}}
+
+
+
+
+
+
+
+

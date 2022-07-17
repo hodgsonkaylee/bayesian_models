@@ -1,0 +1,507 @@
+\documentclass{beamer}
+\usetheme{Singapore}
+
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{breqn}
+\usepackage{natbib}%,bibspacing}
+\usepackage{graphicx}
+\usepackage{bm}
+%\usepackage{geometry}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage[english]{babel}
+\usepackage[autostyle]{csquotes}
+
+\title{The Subordination of Women \\ and National Health Outcomes}
+\subtitle{A Bayesian Hierarchical Regression Model Approach}
+\author{Kaylee Hodgson}
+\institute{Brigham Young University}
+\date{March 20, 2019}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Introduction}
+\begin{columns}
+	\begin{column}{0.48\textwidth}
+\begin{itemize}
+\item Variation in inequality between men and women allows for empirical testing on its impacts
+\item Is the health and wellbeing of a nation impacted by the level that women are subordinated?
+\end{itemize}
+	\end{column}
+	\begin{column}{0.48\textwidth}
+		\begin{figure}
+\includegraphics[width=4.5cm,trim={0 0 48cm 0},clip]{womencostarica.jpg}
+\end{figure}
+	\end{column}
+\end{columns}
+\bigskip
+\textbf{Purpose: identify whether higher levels of gender inequality in the household are significantly tied to poor health outcomes for women, children, and the general public.}
+\end{frame}
+
+\begin{frame}
+\frametitle{Background and Motivation}
+\begin{itemize}
+\item Other studies have found direct link between specific aspects of treatment of women and specific health outcomes
+\item Women are often the main caregivers in their families and communities
+\item \textbf{\textit{When women's voices and interests are subordinated, not only does their own health suffer, but their children and other adults in their family and community who rely on them suffer negative health consequences as well}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{The Syndrome Scale}
+Combines 11 indicators of the subordination of women in the home: 
+\begin{itemize}
+\tiny
+\begin{columns}
+	\begin{column}{0.48\textwidth}
+	\item prevalence of patrilocal marriage
+\item prevalence of brideprice or dowry
+\item prevalence and legality of polygyny
+\item presence of counsin marriage
+\item age of marriage for girls
+\item laws and practices surrounding women's property rights
+	\item presence of son preferences or sex ratio alteration
+\item presence of inequity in family law/custom that favors males
+\item overall level of violence against women in society
+\item presence of societal sanction for femicide
+\item whether there is legal exoneration for rapists who offer to marry their victims 
+	\end{column}
+	\begin{column}{0.48\textwidth}
+\begin{figure}
+  \begin{centering}
+  \includegraphics[width=4.5cm]{TheSyndrome.png}
+  \label{SynMap}
+    \end{centering}
+\end{figure}
+	\end{column}
+\end{columns}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\frametitle{The Syndrome Scale}
+  \begin{centering}
+  \includegraphics[width=9cm]{TheSyndromeMap.png}
+  \label{SynMap}
+    \end{centering}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Control Variables}
+\itemize
+\item percentage of the population that lives in urban areas (The World Bank)
+\item aggregated civilization identification (based on Samuel Huntington's civilizational) \item colonial heritage - dichotomous, indicates whether a country was colonized (from Valerie Hudson and Donna Lee Bowen's scale in their forthcoming book)
+\item percentage of land that is arable (The World Bank)
+\item number of unique land neighbors (Wikipedia)
+\item level of ethnic fractionalization (Alesina et al., 2003)
+\item level of religious fractionalization (Alesina et al., 2003).
+\end{frame}
+
+\begin{frame}
+\frametitle{Health Outcomes: Women's Health}
+\begin{columns}
+	\begin{column}{0.38\textwidth}
+	\centering
+		\vspace{-1.5em}
+		\begin{figure}
+\includegraphics[width=4.75cm]{womenparaguay.jpg}
+\end{figure}
+	\end{column}
+	\begin{column}{0.58\textwidth}
+	\scriptsize
+\begin{enumerate}
+\item Life Expectancy at Birth for Females (World Health Organization)
+\item Percent of Pregnant Women Receiving Prenatal Care (The World Bank)
+\item Percent of Birth Attended by Skilled Staff (The World Bank)
+\item Births per 1000 Women Ages 15-19 (The World Bank)
+\item Lifetime Risk of Maternal Death (The World Bank)
+\item Death by Communicable Diseases, Maternal, Prenatal and Nutrition Conditions as a percentage of Total Population (The World Bank)
+\item Prevalence of HIV Among Women Ages 15+ (The World Bank)
+\end{enumerate}
+	\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Health Outcomes: Children's Health}
+\begin{columns}
+	\begin{column}{0.38\textwidth}
+		\vspace{-1em}
+		\begin{figure}
+\includegraphics[width=4cm]{childrentanzania.jpg}
+\end{figure}
+\vspace{-2em}
+		\begin{figure}
+\includegraphics[width=4cm]{childrenchina.jpg}
+\end{figure}
+	\end{column}
+	\begin{column}{0.58\textwidth}
+	\footnotesize
+\begin{enumerate}
+\item \% Under 5 Who are Stunted (The World Bank)
+\item Infant Mortality Rate (The World Bank)
+\item Prevalence of Wasting - \% Under 5 (The World Bank)
+\item \% Under 5 who are Underweight (The World Bank)
+\item Deaths due to Diarrhea of Children Under 5 (World Health Organization)
+\item \% Children Ages 12-23 Months Immunized Against Measles (The World Bank)
+\end{enumerate}
+	\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Health Outcomes: Overall Societal Health}
+\begin{columns}
+	\begin{column}{0.28\textwidth}
+	\vspace{-2em}
+		\begin{figure}
+\includegraphics[width=4cm]{childrenphilippines.jpg}
+\end{figure}
+\vspace{-3.5em}
+		\begin{figure}
+\includegraphics[width=4cm]{overallcostarica.jpg}
+\end{figure}
+	\end{column}
+	\begin{column}{0.68\textwidth}
+\tiny
+\begin{enumerate}
+\item	\% Total Population Using Open Defecation (WHO/UNICEF)
+\item \% Population Using Open Defecation in Urban Areas (WHO/UNICEF)
+\item Life Expectancy (World Health Organization)
+\item Health Expenditure as \% of GDP (World Health Organization)
+\item Health Expenditure Per Capita (World Health Organization)
+\item Incidence of Tuberculosis per 100,000 People (The World Bank)
+\item \% of Population Between 15-49 with HIV (The World Bank)
+\item Percentage of Adults Ages 15-49 with HIV/AIDS (CIA World Factbook)
+\item \% of Population that is Undernourished (2015), (The World Bank)
+\item Total Alcohol Consumption Per Capita (The World Bank)
+\item Cigarette Consumption, number of cigarettes smoked per person per year ages $>$ 15 (The Tobacco Atlas)
+\item Access to Improved Water Sources (Social Progress Index)
+\item Access to Improved Sanitary Facilities (Social Progress Index)
+\item Global Hunger Index (Global Hunger Index)
+\item Sustainable Society Index Human Wellbeing (Sustainable Society Index)
+\item Average Dietary Energy Supply Adequacy (Food and Agriculture Organization of the UN)
+\end{enumerate}
+	\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Hypothesis}
+\textbf{\textit{I hypothesize that there is a significant relationship between the Syndrome's quantification of the subordination of women and these health outcomes.}}
+\end{frame}
+
+\begin{frame}
+\frametitle{Preliminary Approaches: Multivariate Regression}
+\begin{equation}
+\mathbf{Y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\Xi},
+\end{equation}
+\begin{itemize}
+\item Treats each row of $\mathbf{Y}$ as a single observation
+\item Observation only considered complete if the estimation for each response variable is given 
+\item An option to deal with missing values: Imputation
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Preliminary Model Approaches: Multivariate Regression \\ \normalsize{A Couple of Imputation Options}}
+\footnotesize
+\textbf{Expectation-Maximization and Multiple Imputation}
+\begin{itemize}
+\item Treat missing components of $\mathbf{Y}$ as responses in regression model:
+\begin{equation}
+\hat{\mathbf{y}}_i^{(m)} = \hat{\boldsymbol{\mu}}_i^{(m)} + \mathbf{B} (\mathbf{x}_i^{(c)} - \hat{\boldsymbol{\mu}}_i^{(c)}),
+\end{equation}
+\item At each iteration, use predicted values of $\mathbf{y}_i^{(m)}$ to estimate $\mathbf{B}=\hat{\boldsymbol{\Sigma}}_{(m)(c)}\hat{\boldsymbol{\Sigma}}_{(c)(c)}^{-1}$ and $\hat{\boldsymbol{\mu}}$, until convergence.
+\item Take the final estimates, $\tilde{\boldsymbol{\mu}}$ and $\tilde{\boldsymbol{\Sigma}}$, and use those to find the missing values of $\mathbf{Y}$, with an error term in the calculation:
+\begin{equation}
+\mathbf{y}_{i,[m]}^{(m)} = \boldsymbol{\mu}_i^{(m)} + \mathbf{B} (\mathbf{x}_i^{(c)} - \boldsymbol{\mu}_i^{(c)}) + \mathbf{e}_{i,[m]}^{(m)} \text{, } 
+\end{equation}
+\begin{equation}
+\mathbf{e}_{i,[m]}^{(m)} \sim\ \text{MVNorm}(\mathbf{0},\boldsymbol{\Sigma}_{(m)(m)}-\boldsymbol{\Sigma}_{(m)(c)}\boldsymbol{\Sigma}_{(c)(c)}^{-1}\boldsymbol{\Sigma}_{(c)(m)})
+\end{equation}
+\end{itemize}
+\textbf{Mean Hot-Deck Imputation}
+\begin{itemize}
+\item Take the average of each column of $\mathbf{Y}$ 
+\item Impute that average value for every missing value
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Preliminary Model Approaches: Multivariate Regression \\ \normalsize{Imputation Assumptions}}
+\begin{itemize}
+\item These imputation methods require that the data be missing at random
+\item Health dataset appears to have non-random missing data:
+\begin{enumerate}
+\item Different databases have varying lists of countries, so missingness at least partially relies on the data source
+\item Health outcome data more likely to be reported by countries that have better health outcomes
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Preliminary Model Approaches: Simple Linear Regression}
+\begin{equation}
+\mathbf{Y}_j = \mathbf{X}\boldsymbol{\beta}_j + \boldsymbol{\epsilon}_j,
+\end{equation}
+where $j=1,...,29$ corresponds with each dependent variable.
+\begin{itemize}
+\item This approach treats each response variable as independent of all other response variables
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Preliminary Model Approaches: Advantages and Disadvantages}
+\begin{enumerate}
+\item Multivariate Regression
+\begin{itemize}
+\item Advantage: Takes into account the relationship between the response variables
+\item Disadvantage: Deletes too many observations, imputation requires data be missing at random
+\end{itemize}
+\item Simple Regression
+\begin{itemize}
+\item Advantage: Keeps more observations
+\item Disadvantage: Treats each response variable as independent from the others
+\end{itemize}
+\end{enumerate}
+\textbf{Is there an alternative model that has the advantages of each of these?}
+\end{frame}
+
+\begin{frame}
+\frametitle{Bayesian hierarchical approach to linear regression}
+\itemize
+\item Allows analysis of each health indicator separately in a linear regression model - less need for imputation
+\item The relationship between the response variables are taken into account in the hierarchy of the priors, by assuming that the prior distribution for the coefficients is the same for each model regardless of the response variable.
+\end{frame}
+
+\begin{frame}
+\frametitle{Standardizing Independent Variables for Analysis}
+Standardization of independent variables following the methods put forward in Gelman et al. (2014):
+\begin{itemize}
+\item Scale all to have mean=0, standard deviation=0.5
+\item Dichotomous/Categorical variable: 
+\smallskip
+\begin{enumerate}
+\item If $m>2$, create $m-1$ indicator variables
+\item Find proportion of 0's ($\pi_0$) and 1's ($\pi_1$)
+\item Redefine values: 0 = $\pi_1$ and 1 = $-\pi_0$
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Standardizing Dependent Variables for Analysis}
+\begin{itemize}
+\item First verify the normality of all response variables
+\item Transform variables that are heavily skewed using box cox transformation
+\item Standardize all response variables:
+\begin{equation}
+Y^s_{ij} = (Y_{ij} - \bar{Y}_j)/\text{sd}(Y_j)
+\end{equation}
+\item Make directionality consistent
+\end{itemize}
+Note: Scaling variables may be not be appropriate for analysis where we need specific interpretations of the coefficients.
+\end{frame}
+
+\begin{frame}
+\frametitle{Bayesian Hierarchical Linear Regression Model}
+The three-level hierarchical model is structured as follows:
+\footnotesize
+\begin{equation}
+\begin{split}
+&\text{level 1: } y_{ij}|\boldsymbol{\beta}_{j},\sigma_{ij} = \beta_{j0} + \sum_{k=1}^{10} x_{ijk} \beta_{jk} + \epsilon_{i}, \epsilon_{i} \sim\ \text{Normal}(0,\sigma^2) \\
+&\text{level 2: } \beta_{j0} \sim\ \text{Normal}(0,1) \text{, } \beta_{jk} \sim\ \text{Normal}(\mu_{k},\phi_{k}) \text{, } \sigma^2 \sim\ \text{Uniform}(0,1) \\
+&\text{level 3: } \mu_{k} \sim\ \text{Normal}(0,1) \text{, } \phi_{k}^2 \sim\ \text{Uniform}(0, 2), 
+\end{split}
+\end{equation}
+where $i=1,...,160$ corresponds with the country, $j=1,...,29$ corresponds with the regression model (one model for each health variable), and $k=1,...,10$ corresponds with the independent variables.
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulation Study}
+Multivariate data with values missing non-randomly (matching the health data missingness patterns)
+\begin{enumerate}
+\item Percentage missing different for each response variable
+\item Lowest values for each variable deleted
+\end{enumerate}
+Compare the following models' performance with this data:
+\begin{enumerate}
+\item Multivariate Linear Regression (removing all rows with missing values)
+\item Multivariate Linear Regression (with mean hot-deck imputation)
+\item Multivariate Linear Regression (with expectation-maximization and multiple imputation)
+\item Simple Linear Regression (where each model is fitted independently)
+\item Bayesian Hierarchical Linear Regression 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulation Study}
+\begin{itemize}
+\item $\mathbf{X}$ values are drawn independently and randomly from a standard normal distribution ($x_{ij} \stackrel{i.i.d.}{\sim} \text{Normal}(0,1)$)
+\item $\boldsymbol{\beta}$ values were chosen so that the coefficient for each explanatory variable ($k$) across the different response variables ($j$) were correlated: $\boldsymbol{\beta}_k \sim\ \text{Multivariate Normal}(\mathbf{0},\boldsymbol{\Sigma})$ (where $\boldsymbol{\Sigma}$ was a $j$ by $j$ positive definite correlation matrix)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulation Study}
+\footnotesize
+At each iteration...
+\begin{itemize}
+\item Induce correlation between the response variables: $\boldsymbol{\epsilon}$ randomly generated such that $\mathbf{Y}=\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}$, where $\epsilon_i \sim\ \text{MVNorm}(\mathbf{0},\boldsymbol{\Sigma})$.
+\item Induce non-random missingness: percentage missing (0-30\%) randomly chosen for each $Y_j$, and the missing values are non-randomly chosen.
+\item Use different methods to estimate the $\boldsymbol{\beta}$ values.
+\item Estimate the mean absolute error (MAE) and root mean squared error (RMSE) to compare the $\boldsymbol{\hat{\beta}}$ values to $\boldsymbol{\beta}$.
+\end{itemize}
+\begin{columns}
+	\begin{column}{0.51\textwidth}
+\begin{equation}
+\text{RMSE} = \sqrt{\frac{1}{k+1}\sum_{r=0}^{k} (\beta_r - \hat{\beta}_r)^2 }
+\end{equation}
+	\end{column}
+	\begin{column}{0.45\textwidth}
+\begin{equation}
+\text{MAE} = \frac{1}{k+1}\sum_{r=0}^{k} |\beta_r - \hat{\beta}_r|
+\end{equation}
+	\end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Simulation Study Results}
+\begin{table}[htb]
+\renewcommand\thetable{2.1}
+       \footnotesize
+    \centering
+        \caption{Simulation Study Model Comparisons - RMSE and MAE}
+    \begin{tabular}{l|l|r|r|r|r|r|r}
+    & & \multicolumn{2}{c}{N=50} & \multicolumn{2}{c}{N=160} & \multicolumn{2}{c}{N=300} \\
+     & & m=5 & m=10 & m=5 & m=10 & m=5 & m=10 \\
+    \hline
+    \hline
+    RMSE & Model 1 & 0.3337 & 0.2552 & 0.1153 & 0.1555 & 0.0859 & 0.0970  \\
+      & Model 2 & 0.3285 & 0.1846 & 0.1455 & 0.1563 & 0.1306 & 0.0908  \\ 
+      & Model 3 & 0.2096 & 0.1756 & 0.0976 & 0.0868 & 0.0710 & 0.0637 \\
+      & Model 4 & \textbf{0.1823} & 0.1588 & \textbf{0.0910} & 0.0868 & 0.0624 & 0.0587  \\
+      & Model 5 & 0.1847 & \textbf{0.1579} & 0.0913 & \textbf{0.0851} & \textbf{0.0623} & \textbf{0.0585}  \\  
+      \hline
+    MAE & Model 1 & 0.2764 & 0.2077 & 0.0953 & 0.1263 & 0.0702 & 0.0786 \\
+      & Model 2 & 0.2612 & 0.1476 & 0.1131 & 0.1128 & 0.0942 & 0.0683 \\
+       & Model 3 & 0.1781 & 0.1373 & 0.0796 & 0.0704 & 0.0570 & 0.0506 \\
+              & Model 4 & \textbf{0.1502} & 0.1297 & \textbf{0.0744} & 0.0706 & 0.0510 & 0.0473 \\
+      & Model 5 & 0.1524 & \textbf{0.1290} & 0.0746 & \textbf{0.0695} & \textbf{0.0509} & \textbf{0.0471} \\
+    \end{tabular}
+    \label{symcomp}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Simulation Study Results}
+\begin{table}[htb]
+\renewcommand\thetable{2.2}
+       \footnotesize
+    \centering
+        \caption{Simulation Study Model Comparisons - Credible/Confidence Intervals}
+    \begin{tabular}{l|r|r|r|r|r|r}
+    & \multicolumn{2}{c}{N=50} & \multicolumn{2}{c}{N=160} & \multicolumn{2}{c}{N=300} \\
+     & m=5 & m=10 & m=5 & m=10 & m=5 & m=10 \\
+    \hline
+    \hline
+       Model 4 & 0.6410 & 0.6256 & 0.3471 & 0.3493 & 0.2469 & 0.2448 \\
+      Model 5 & \textbf{0.6134} & \textbf{0.5972} & \textbf{0.3372} & \textbf{0.3413} & \textbf{0.2416} & \textbf{0.2381} \\
+          \end{tabular}
+    \label{symcompci}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Bayesian Hierarchical Analysis of Health Data}
+\begin{itemize}
+\item Analysis run in JAGS using Markov Chain Monte Carlo (MCMC)
+\item Chains=5, Iterations=12,000, Burn-in=2,000, Thinning=5 (to reduce autocorrelation)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Diagnostics}
+\begin{figure}
+\includegraphics[height=7.5cm]{convplots.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Diagnostics}
+Diagnostics for the Syndrome Coefficient
+\itemize
+\item Lowest Effective Sample Size in 29 Models: 8,618 (out of 10,000 posterior draws remaining after burn-in and thinning)
+\item $\hat{R}$ in 29 Models: ranged from 0.958 to 1.04
+\end{frame}
+
+\begin{frame}
+\frametitle{Model Results}
+\begin{table}[htb]
+\renewcommand\thetable{3.1}
+       \tiny
+    \centering
+    \begin{tabular}{l|l|r|r|r}
+    & \textbf{Health Variable} & \textbf{Estimate} & \textbf{2.5\%} & \textbf{97.5\%} \\
+    \hline
+    \hline
+    Women's Health & Female Life Expectancy at Birth &  -1.00 & -1.29 & -0.72 \\ 
+     & Pregnant Women Receiving Prenatal Care & -0.86 & -1.19 & -0.53 \\ 
+     & Births Attended by Skilled Staff  & -0.91 & -1.21 & -0.60 \\ 
+     & Births of Women Ages 15-19  & -0.61 & -0.89 & -0.32 \\ 
+     & Lifetime Risk of Maternal Death  & -0.96 & -1.25 & -0.67 \\
+     & Death by Preventable Conditions  & -0.98 & -1.27 & -0.69 \\ 
+     & Prevalence of HIV for Women Ages 15$+$  &  -0.91 & -1.25 & -0.58 \\
+     \hline
+     Children's Health & Children Under 5 Who are Stunted  &  -0.91 & -1.31 & -0.52 \\
+     & Infant Mortality Rate (IMR)  & -1.02 & -1.31 & -0.73 \\  
+     & Children Under 5 Who are Wasting  & -1.08 & -1.48 & -0.69 \\
+     & Children Under 5 who are Underweight  &  -0.91 & -1.31 & -0.51 \\ 
+     & Children Under 5 Deaths due to Diarrhea  & -0.80 & -1.08 & -0.52 \\
+     & Children Ages 12-23 Immunized Against Measles  &  -0.51 & -0.80 & -0.23 \\
+     \hline
+     Overall Societal & Open Defecation  &  -0.70 & -0.99 & -0.42 \\ 
+     Health & Open Defecation in Urban Areas  & -0.61 & -0.90 & -0.30 \\  
+     & Life Expectancy  & -0.94 & -1.23 & -0.65 \\
+     & Health Expenditure as \% of GDP & -0.81 & -1.10 & -0.52 \\ 
+     & Health Expenditure per Capita  & -0.03 & -0.32 & 0.27 \\
+     & Incidents of Tuberculosis  & -0.73 & -1.01 & -0.44 \\
+     & HIV Ages 15-49  & -0.12 & -0.46 & 0.22 \\ 
+     & HIV/AIDS Ages 15-49  & -0.14 & -0.48 & 0.20 \\ 
+     & Undernourishment  & -0.80 & -1.09 & -0.50 \\     
+     & Alcohol Consumption per Capita  & 1.23 & 0.92 & 1.53 \\ 
+     & Cigarette Consumption  &  0.40 & 0.09 & 0.70 \\
+     & Access to Improved Water Sources  & -0.72 & -1.01 & -0.42 \\
+     & Access to Improved Sanitary Facilities  & -0.80 & -1.09 & -0.51 \\ 
+     & Global Hunger Index  &  -0.98 & -1.33 & -0.62 \\ 
+     & Sustainable Society Index Human Wellbeing  &  -1.11 & -1.41 & -0.81 \\ 
+     & Average Dietary Energy Supply Adequacy  & -0.23 & -0.53 & 0.06 \\ 
+    \end{tabular}
+    \label{synest}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\frametitle{Findings and Conclusion}
+\begin{itemize}
+\item The Syndrome variable significantly linked to all health outcomes for both women and children, and in 10/16 overall health models
+\item Higher subordination on average corresponds to worse health outcomes
+\item If women are disempowered, harmed, overly burdened, or silenced, their positive health practices and impacts are stifled. 
+\item Political and social leaders interested in improving health should place empowerment of women at the center of their calculus for efforts to improve health outcomes
+\end{itemize}
+\end{frame}
+
+\end{document}
